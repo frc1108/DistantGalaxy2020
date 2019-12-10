@@ -51,7 +51,7 @@ public class RobotContainer {
       new DefaultDrive(
         m_robotDrive,
         ()->m_driverController.getY(GenericHID.Hand.kLeft),
-        ()->m_driverController.getX(GenericHID.Hand.kRight)) 
+        ()->m_driverController.getX(GenericHID.Hand.kLeft)) 
     );
   }
 

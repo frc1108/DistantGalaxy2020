@@ -42,7 +42,7 @@ public DriveSubsystem(){
 }
 
 public void arcadeDrive(double fwd, double rot){
-  m_drive.arcadeDrive(fwd, rot);
+  m_drive.arcadeDrive(-fwd, rot);
 }
 
 public void setMaxOutput(double maxOutput){
