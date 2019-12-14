@@ -22,18 +22,22 @@ public final class Constants {
         public static final int kRightMotor1Port = 2;
         public static final int kRightMotor2Port = 3;
 
-        // public static final int[] kLeftEncoderPorts = new int[]{0, 1};
+        public static final int[] kLeftEncoderPorts = new int[]{0, 1};
         // public static final int[] kRightEncoderPorts = new int[]{2, 3};
-        // public static final boolean kLeftEncoderReversed = false;
+        public static final boolean kLeftEncoderReversed = false;
         // public static final boolean kRightEncoderReversed = true;
 
-        // public static final int kEncoderCPR = 2048;
-        //...going to leave encoders off for the moment.  Using hatchbot example.
+        public static final int kEncoderCPR = 2048;
+        
+        public static final double kWheelDiameterInches = 6;
+        public static final double kEncoderDistancePerPulse =
+        // Assumes the encoders are directly mounted on the wheel shafts
+        (kWheelDiameterInches * Math.PI) / (double) kEncoderCPR;//...going to leave encoders off for the moment.  Using hatchbot example.
         //..Also going to leave off Hatch Mechanism
 
     }
 
     public static final class OIConstants {
-        public static final int kDriverControllerPort = 1;
+        public static final int kDriverControllerPort = 0;
     }
 }

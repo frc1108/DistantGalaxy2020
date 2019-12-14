@@ -9,6 +9,7 @@ package frc.robot.commands;
 
 import java.util.function.DoubleSupplier;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 import frc.robot.subsystems.DriveSubsystem;
@@ -39,6 +40,7 @@ public class DefaultDrive extends CommandBase {
   @Override
   public void execute() {
     m_drive.arcadeDrive(m_forward.getAsDouble(),m_rotation.getAsDouble());
+    SmartDashboard.putData("Distance",m_drive.getLeftEncoder());
   }
 
 }
