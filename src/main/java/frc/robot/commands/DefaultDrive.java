@@ -8,6 +8,7 @@
 package frc.robot.commands;
 
 import java.util.function.DoubleSupplier;
+import java.util.function.BooleanSupplier;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -18,6 +19,7 @@ public class DefaultDrive extends CommandBase {
   private final DriveSubsystem m_drive;
   private final DoubleSupplier m_forward;
   private final DoubleSupplier m_rotation;
+  private final BooleanSupplier m_boost;
 
   /**
    * 
@@ -26,10 +28,11 @@ public class DefaultDrive extends CommandBase {
    * @param rotation The control input for turning
    */
 
-  public DefaultDrive(DriveSubsystem subsystem,DoubleSupplier forward, DoubleSupplier rotation) {
+  public DefaultDrive(DriveSubsystem subsystem,DoubleSupplier forward, DoubleSupplier rotation, BooleanSupplier boost) {
     m_drive = subsystem;
     m_forward = forward;
     m_rotation = rotation;
+    m_boost = boost;
     addRequirements(m_drive);
     
     // Use requires() here to declare subsystem dependencies
@@ -39,8 +42,13 @@ public class DefaultDrive extends CommandBase {
   // Called repeatedly when this Command is scheduled to run
   @Override
   public void execute() {
-    m_drive.arcadeDrive(m_forward.getAsDouble(),m_rotation.getAsDouble());
-    SmartDashboard.putData("Distance",m_drive.getLeftEncoder());
+    if (m_boost.getAsBoolean()) {
+      m_drive.arcadeDrive(0.85*m_forward.getAsDouble(),0.85*m_rotation.getAsDouble());
+    }
+    else
+    {
+      m_drive.arcadeDrive(0.6*m_forward.getAsDouble(),0.6*m_rotation.getAsDouble());
+    }
   }
 
 }

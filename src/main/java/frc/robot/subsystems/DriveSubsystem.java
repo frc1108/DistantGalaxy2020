@@ -7,10 +7,17 @@
 
 package frc.robot.subsystems;
 
+import com.analog.adis16448.frc.ADIS16448_IMU;
 import edu.wpi.first.wpilibj.Encoder;
-import com.ctre.phoenix.motorcontrol.can.*;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.geometry.Pose2d;
+import edu.wpi.first.wpilibj.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.interfaces.Gyro;
+import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
+import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import static frc.robot.Constants.DriveConstants.kLeftMotor1Port;
@@ -21,7 +28,9 @@ import static frc.robot.Constants.DriveConstants.kRightMotor2Port;
 import static frc.robot.Constants.DriveConstants.kEncoderDistancePerPulse;
 import static frc.robot.Constants.DriveConstants.kLeftEncoderPorts;
 import static frc.robot.Constants.DriveConstants.kLeftEncoderReversed;
-
+import static frc.robot.Constants.DriveConstants.kRightEncoderPorts;
+import static frc.robot.Constants.DriveConstants.kRightEncoderReversed;
+import static frc.robot.Constants.DriveConstants.kGyroReversed;
 
 
 /**
@@ -48,8 +57,13 @@ public class DriveSubsystem extends SubsystemBase {
     private final Encoder m_leftEncoder =
     new Encoder(kLeftEncoderPorts[0], kLeftEncoderPorts[1], kLeftEncoderReversed);
 
+    // The right-side drive encoder
+    private final Encoder m_rightEncoder =
+    new Encoder(kRightEncoderPorts[0], kRightEncoderPorts[1], kRightEncoderReversed);
+
 public DriveSubsystem(){
   m_leftEncoder.setDistancePerPulse(kEncoderDistancePerPulse);
+  m_rightEncoder.setDistancePerPulse(kEncoderDistancePerPulse);
 
 }
 
@@ -62,6 +76,7 @@ public void arcadeDrive(double fwd, double rot){
    */
   public void resetEncoders() {
     m_leftEncoder.reset();
+    m_rightEncoder.reset();
   }
 
 /**
@@ -70,7 +85,7 @@ public void arcadeDrive(double fwd, double rot){
    * @return the average of the TWO encoder readings
    */
   public double getAverageEncoderDistance() {
-    return (m_leftEncoder.getDistance());
+    return ((m_leftEncoder.getDistance()+m_rightEncoder.getDistance())/2);
   }
 
   /**
@@ -82,6 +97,15 @@ public void arcadeDrive(double fwd, double rot){
     return m_leftEncoder;
   }
 
+  /**
+   * Gets the left drive encoder.
+   *
+   * @return the left drive encoder
+   */
+  public Encoder getRightEncoder() {
+    return m_rightEncoder;
+  }
+  
 public void setMaxOutput(double maxOutput){
   m_drive.setMaxOutput(maxOutput);
 }
